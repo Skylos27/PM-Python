@@ -28,6 +28,10 @@ class PasswordManager:
         with open(path,'rb') as f:
             self.key = f.read()
 
+    def decrypt_password(self, encrypted_password):
+        decrypted_password = Fernet(self.key).decrypt(encrypted_password.encode()).decode()
+        return decrypted_password
+
 
     def list_sites(self, path = "./entries.txt"):
         with open(path,'r') as f:

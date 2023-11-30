@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, redirect, url_for
 from pm import PasswordManager
+
 app = Flask(__name__)
 
 password_manager = PasswordManager()
@@ -14,7 +15,7 @@ db = []
 with open('entries.txt', 'r') as file:
     for line in file:
         site, username, password = line.strip().split(':')
-        db.append({'site': site, 'username': username, 'password': password})
+        db.append({'site': site, 'username': username, 'password': password_manager.decrypt_password(password)})
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -46,7 +47,6 @@ def add_entry():
         password = request.form['password']
 
         password_manager.add_password(site, username, password)
-        
         db.append({'site': site, 'username': username, 'password': password})
         return redirect(url_for('dashboard', username='admin'))
     return render_template('add_entry.html')
