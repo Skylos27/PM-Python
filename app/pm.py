@@ -32,7 +32,7 @@ class PasswordManager:
         return decrypted_password
 
     def encrypt_password(self, encrypted_password):
-        encrypted = Fernet(self.key).encrypt(password.encode())
+        encrypted = Fernet(self.key).encrypt(encrypted_password.encode())
         return encrypted
 
 

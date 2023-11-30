@@ -13,11 +13,15 @@ users = [{'username': 'admin', 'password': 'admin', 'entries': []}]
 
 # Utilisez une autre liste pour stocker les données du fichier entries.txt
 db = []
+def update_db():
+    with open('entries.txt', 'r') as file:
+        for line in file:
+            site, username, password = line.strip().split(':')
+            db.append({'site': site, 'username': username, 'password': password_manager.decrypt_password(password)})
+        print(db)
 
-with open('entries.txt', 'r') as file:
-    for line in file:
-        site, username, password = line.strip().split(':')
-        db.append({'site': site, 'username': username, 'password': password_manager.decrypt_password(password)})
+update_db()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -37,15 +41,26 @@ def edit_entry(site):
 
     return redirect(url_for('dashboard', username='admin'))
 
-@app.route('/delete_entry', methods=['GET', 'POST'])
-def delete_entry():
+@app.route('/delete_entry/<string:site>')
+def delete_entry(site):
+    password_manager.delete_pass(site)
+    index_to_remove = None
+    for i, entry in enumerate(db):
+        if entry['site'] == site:
+            index_to_remove = i
+            break
 
+    # Supprimez l'entrée de db si elle a été trouvée
+    if index_to_remove is not None:
+        db.pop(index_to_remove)
+    update_db()
     return redirect(url_for('dashboard', username='admin'))
 
 
 
 @app.route('/dashboard/<username>')
 def dashboard(username):
+    update_db()
     user = get_user_by_username(username)
     if user:
         return render_template('dashboard.html', entries=db)
