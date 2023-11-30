@@ -74,4 +74,13 @@ class PasswordManager:
         return self.login_dict[site]
     
     def delete_pass(self,site):
-        pass
+        # Open the file in read mode to read its contents
+        with open('./entries.txt', 'r') as file:
+            lines = file.readlines()
+
+        # Open the file in write mode to overwrite its contents
+        with open('./entries.txt', 'w') as file:
+            # Write all lines except those containing the specified word
+            for line in lines:
+                if site not in line:
+                    file.write(line)
