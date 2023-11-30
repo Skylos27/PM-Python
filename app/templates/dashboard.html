@@ -1,3 +1,5 @@
+<!-- dashboard.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +18,7 @@
                     <th>Site</th>                   
                     <th>Username</th>
                     <th>Mot de passe</th>
+                    <th>Action</th>  <!-- Ajout de la colonne Action -->
                 </tr>
             </thead>
             <tbody>
@@ -23,8 +26,13 @@
                     <tr>
                         <td>{{ entry.site }}</td>
                         <td>{{ entry.username }}</td>
-                         <td>{{ entry.password }}</td>
-
+                        <td>{{ entry.password }}</td>
+                        <td>
+                            <form method="post" action="{{ url_for('delete_entry', site=entry.site) }}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

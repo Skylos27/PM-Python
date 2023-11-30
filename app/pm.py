@@ -18,10 +18,6 @@ class PasswordManager:
         return existing
                 
 
-
-
-
-
     def create_key(self,path):
         self.key = Fernet.generate_key()
         with open(path,'wb') as f:

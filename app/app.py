@@ -30,6 +30,11 @@ def home():
             return render_template('login.html', error=error)
     return render_template('login.html')
 
+@app.route('/delete_entry/<site>', methods=['POST', 'DELETE'])
+def delete_entry(site):
+
+    return redirect(url_for('dashboard', username='admin'))
+
 @app.route('/dashboard/<username>')
 def dashboard(username):
     user = get_user_by_username(username)
