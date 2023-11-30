@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Password Manager Dashboard</h1>
+        <a href="{{ url_for('add_entry') }}">Ajouter une entrée</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Site</th>                   
+                    <th>Username</th>
+                    <th>Mot de passe</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                    <tr>
+                        <td>{{ entry.site }}</td>
+                        <td>{{ entry.username }}</td>
+                         <td>{{ entry.password }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
