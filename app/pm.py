@@ -17,7 +17,6 @@ class PasswordManager:
                     existing = True
         return existing
                 
-
     def create_key(self,path):
         self.key = Fernet.generate_key()
         with open(path,'wb') as f:
@@ -31,6 +30,10 @@ class PasswordManager:
     def decrypt_password(self, encrypted_password):
         decrypted_password = Fernet(self.key).decrypt(encrypted_password.encode()).decode()
         return decrypted_password
+
+    def encrypt_password(self, encrypted_password):
+        encrypted = Fernet(self.key).encrypt(password.encode())
+        return encrypted
 
 
     def list_sites(self, path = "./entries.txt"):

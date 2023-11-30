@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, redirect, url_for
 from pm import PasswordManager
+from flask import jsonify
+
 
 app = Flask(__name__)
 
@@ -30,15 +32,17 @@ def home():
             return render_template('login.html', error=error)
     return render_template('login.html')
 
-@app.route('/edit/<site>', methods=['POST', 'DELETE'])
+@app.route('/edit/<site>', methods=['GET', 'POST'])
 def edit_entry(site):
 
     return redirect(url_for('dashboard', username='admin'))
 
-@app.route('/delete_entry/<site>', methods=['POST', 'DELETE'])
-def delete_entry(site):
+@app.route('/delete_entry', methods=['GET', 'POST'])
+def delete_entry():
 
     return redirect(url_for('dashboard', username='admin'))
+
+
 
 @app.route('/dashboard/<username>')
 def dashboard(username):
