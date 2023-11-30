@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une entrée</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="add-entry-container">
+        <h1>Ajouter une entrée</h1>
+        <form method="post" action="/add_entry">
+            <label for="site">Site:</label>
+            <input type="text" id="site" name="site" required>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Ajouter</button>
+        </form>
+        <a href="{{ url_for('dashboard', username='admin') }}">Retour au tableau de bord</a>
+    </div>
+</body>
+</html>
