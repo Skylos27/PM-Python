@@ -39,7 +39,8 @@
                         <td>{{ entry.username }}</td>
                         <td>{{ entry.password }}</td>
                         <td class="action-buttons">
-                            <a class="action-button" href="{{ url_for('delete_entry', site=entry.site) }}">Supprimer</a>
+                            <a class="action-button" href="{{ url_for('edit_entry', site=entry.site, username=entry.username, password=entry.password) }}">Modifier</a>
+
 
                            <a class="action-button" href="{{ url_for('delete_entry', site=entry.site) }}">Supprimer</a>
 

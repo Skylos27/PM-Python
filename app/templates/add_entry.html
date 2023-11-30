@@ -9,6 +9,9 @@
 <body>
     <div class="add-entry-container">
         <h1>Ajouter une entrée</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
         <form method="post" action="/add_entry">
             <label for="site">Site:</label>
             <input type="text" id="site" name="site" required>

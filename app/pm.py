@@ -58,7 +58,8 @@ class PasswordManager:
         :return: mot de passe déchiffré
         :rtype: str
         """
-        decrypted_password = Fernet(self.key).decrypt(encrypted_password.encode()).decode()
+        key = "2K3lubeoYVHOWNh5SJdqekKeAf40OA-mevTFIKATD7k=%"
+        decrypted_password = Fernet(key).decrypt(encrypted_password.encode()).decode()
         return decrypted_password
 
     def encrypt_password(self, encrypted_password):
@@ -85,7 +86,7 @@ class PasswordManager:
         with open(path,'r') as f:
             for line in f:
                 site,login, encrypted = line.split(":")
-                print("- " + site + "\n")
+                print(site + "\n")
 
     def load_pass(self,path):
         """

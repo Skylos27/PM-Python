@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pm import PasswordManager
+from cryptography.fernet import InvalidToken
 
 
 app = Flask(__name__)
@@ -12,11 +13,19 @@ users = [{'username': 'admin', 'password': 'admin', 'entries': []}]
 # Liste pour stocker les données du fichier entries.txt
 db = []
 def update_db():
+    db.clear()
     with open('entries.txt', 'r') as file:
         for line in file:
-            site, username, password = line.strip().split(':')
-            db.append({'site': site, 'username': username, 'password': password_manager.decrypt_password(password)})
-        print(db)
+            try:
+                site, username, password = line.strip().split(':')
+                if password[0] == 'b':
+                    password = password[2:-1]
+                decrypted_password = password_manager.decrypt_password(password)
+
+                db.append({'site': site, 'username': username, 'password': decrypted_password})
+            except InvalidToken:
+                print(f"InvalidToken for line: {line.strip()}")
+    print(db)
 
 update_db()
 
@@ -42,8 +51,16 @@ def home():
             return render_template('login.html', error=error)
     return render_template('login.html')
 
-@app.route('/edit/<site>', methods=['GET', 'POST'])
-def edit_entry(site):
+
+
+def update_entries_file():
+    with open('entries.txt', 'w') as file:
+        for entry in db:
+            file.write(f"{entry['site']}:{entry['username']}:{password_manager.encrypt_password(entry['password'])}\n")
+
+
+@app.route('/edit/<site>/<username>/<password>', methods=['GET', 'POST'])
+def edit_entry(site, username, password):
     """
     Route pour la page d'édition d'une entrée
     
@@ -52,7 +69,18 @@ def edit_entry(site):
     :return: page d'édition d'une entrée
     :rtype: template
     """
-    return redirect(url_for('dashboard', username='admin'))
+    if request.method == 'POST':
+        new_site = request.form['site']
+        new_username = request.form['username']
+        new_password = request.form['password']
+        for entry in db:
+            if entry['site'] == site and entry['username'] == username and entry['password'] == password:
+                entry['site'] = new_site
+                entry['username'] = new_username
+                entry['password'] = new_password
+        update_entries_file()
+        return redirect(url_for('dashboard', username='admin'))
+    return render_template('edit_entry.html', site=site, username=username, password=password)
 
 @app.route('/delete_entry/<string:site>')
 def delete_entry(site):
@@ -89,7 +117,6 @@ def dashboard(username):
     :return: page de dashboard
     :rtype: template
     """
-    update_db()
     user = get_user_by_username(username)
     if user:
         return render_template('dashboard.html', entries=db)
@@ -109,7 +136,9 @@ def add_entry():
         site = request.form['site']
         username = request.form['username']
         password = request.form['password']
-
+        if password_manager.check_site(site):
+            error = 'Ce site existe déjà'
+            return render_template('add_entry.html', error=error)
         password_manager.add_password(site, username, password)
         db.append({'site': site, 'username': username, 'password': password})
         return redirect(url_for('dashboard', username='admin'))
