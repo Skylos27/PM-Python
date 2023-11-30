@@ -1,0 +1,26 @@
+# Project Name
+
+## Description
+Application de gestion de mots de passes accessible depuis une page web
+
+Les fonctions sont créées avec Python en utilisant le framework Django Puis appelée via l'API Django Rest
+
+Création base de donnée : toutes les informations sont stockées en base. Les mots de passes utilisateurs sont chiffrés à l'aide de clés privées Les clés privées sont générées de manière asymétrique (seul les utilisateurs ont accès au mot de passe)
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+
+## Installation
+
+pip3 install -r requirement.txt
+
+## Usage
+
+Identifiants de base : admin/admin
+
+Utilisation en local : 
+
+python3 ./app/app.py
+
+Puis connexion à 127.0.0.1:5000

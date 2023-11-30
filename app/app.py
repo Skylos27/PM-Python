@@ -13,11 +13,17 @@ users = [{'username': 'admin', 'password': 'admin', 'entries': []}]
 # Liste pour stocker les données du fichier entries.txt
 db = []
 def update_db():
+    """
+    Updates the database with entries from the 'entries.txt' file.
+    Each entry in the file should be in the format 'site:username:password'.
+    The password is decrypted using the password_manager.decrypt_password() function.
+    """
     db.clear()
     with open('entries.txt', 'r') as file:
         for line in file:
             try:
                 site, username, password = line.strip().split(':')
+                # Remove the 'b' and quotes from the password
                 if password[0] == 'b':
                     password = password[2:-1]
                 decrypted_password = password_manager.decrypt_password(password)
