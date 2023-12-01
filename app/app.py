@@ -17,6 +17,8 @@ def update_db():
     Met à jour la base de données avec les entrées du fichier 'entries.txt'.
     Chaque entrée dans le fichier doit être au format 'site:username:password'.
     Le mot de passe est décrypté en utilisant la fonction password_manager.decrypt_password.
+
+    :return: None
     """
     db.clear()
     with open('entries.txt', 'r') as file:
