@@ -14,9 +14,9 @@ users = [{'username': 'admin', 'password': 'admin', 'entries': []}]
 db = []
 def update_db():
     """
-    Updates the database with entries from the 'entries.txt' file.
-    Each entry in the file should be in the format 'site:username:password'.
-    The password is decrypted using the password_manager.decrypt_password() function.
+    Met à jour la base de données avec les entrées du fichier 'entries.txt'.
+    Chaque entrée dans le fichier doit être au format 'site:username:password'.
+    Le mot de passe est décrypté en utilisant la fonction password_manager.decrypt_password.
     """
     db.clear()
     with open('entries.txt', 'r') as file:
